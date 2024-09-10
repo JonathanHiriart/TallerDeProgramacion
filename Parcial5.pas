@@ -106,6 +106,3 @@ begin
     i:=1;
     incisioB(v,maxmes,max,i);
 end.
-
-
-    while j>0 and vj>actaul do begin   vj+1:=vj   j:=j-1 end vj+1:= actual
