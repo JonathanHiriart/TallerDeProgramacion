@@ -45,7 +45,7 @@ var
     i, j: integer;
     actual:integer;
 begin
-    for i:= 2 to dimL-1 do
+    for i:= 2 to dimL do
     begin
         actual:= v[i];
         j:= i - 1;

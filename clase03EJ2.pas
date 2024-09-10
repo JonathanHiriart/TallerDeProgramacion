@@ -229,21 +229,30 @@ end;
 {d. Implemente un módulo que reciba el árbol generado en iii. y retorne el código de producto
 con mayor cantidad de ventas.}
 
-procedure productoConMayorVentas(a3:arbol3; var max:integer; var code:integer);
+procedure calcularMax(l: lista; var total: integer);
 begin
-    if (a3 <> nil)then begin
-        calcularMax(a3^.listas,max);
-        if (max < )then //me quede trabado aca
-        productoConMayorVentas(a3^.hi, max, code);
-        productoConMayorVentas(a3^.hd, max, code);
+    total := 0;
+    while l <> nil do
+    begin
+        total := total + l^.dato.cant;
+        l := l^.sig;
     end;
 end;
 
-procedure calcularMax(l:lista; var max:integer);
+procedure productoConMayorVentas(a3: arbol3; var max: integer; var code: integer);
+var
+    totalVentas: integer;
 begin
-    if (l <>nil) then begin
-        max:= max + l^.dato.cant;
-        calcularMax(l^.sig,max);
+    if a3 <> nil then
+    begin
+        calcularMax(a3^.listas, totalVentas);
+        if totalVentas > max then
+        begin
+            max := totalVentas;
+            code := a3^.dato;
+        end;
+        productoConMayorVentas(a3^.hi, max, code);
+        productoConMayorVentas(a3^.hd, max, code);
     end;
 end;
 
