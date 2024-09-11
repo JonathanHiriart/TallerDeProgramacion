@@ -129,17 +129,23 @@ begin
     a:=nil;
     inicializarVector(v);
     generarArboles(a,v);
+    writeln('-------------------------');
     writeln('ingrese el dni 1');
     readln(dni1);
+    writeln('-------------------------');
     writeln('ingrse el dni 2');
     readln(dni2);
+    writeln('-------------------------');
     writeln('ingrese la cantidad de consultas');
     readln(x);
+    writeln('-------------------------');
     inicisob(a,dni1,dni2,x,cant);
     writeln('la cantidad de personas con mas consultas entre ese rango es de: ',cant);
+    writeln('-------------------------');
     cant:=0;
     i:=1;
     inicisoC(v,cant,i);
+    writeln('-------------------------');
     writeln('la cantidad de diagnosticos fue de: ',cant);
-    
+    writeln('-------------------------');
 end.

@@ -191,9 +191,12 @@ begin
     inicializarVector(v);
     generarArbol_I(a);
     generarArbol_II(v);
+    writeln('-------------------------');
     writeln('ingrese el codigo de cliente que quiere saber sus compras');
     readln(codigoE);
+    writeln('-------------------------');
     incisoB(a,codigoE,l);
     informarTodasLasCompras(l);
     incisioC(v);
+
 end.

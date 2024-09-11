@@ -1,4 +1,4 @@
-program parcial7;
+program parcial6;
 type
 	subrMes = 1..12;
 	  subrDiagnostico = 'L'..'P';
@@ -24,7 +24,7 @@ type
 	
 	procedure inicializarV(var v:vector);
 	var
-	i:integer;
+		i:integer;
 	begin
 		for i:=1 to 12 do 
 			v[i]:=nil;
@@ -35,26 +35,17 @@ type
 	
 		procedure leerElemento(var elem:atencion);
 		begin
-			writeln('íngrese matricula del doc: ');
+			writeln('-------------------------');
+			writeln('ingrese matricula del doctor: ');
 			readln(elem.matricula);
-			writeln;
-			writeln('matricula: ', elem.matricula);
 			if(elem.matricula<>0) then begin
-				writeln('íngrese dni: ');
+				writeln('ingrese dni: ');
 				readln(elem.dni);
-				writeln;
-				writeln('dni: ', elem.dni);
-				writeln;
-				writeln('íngrese mes: ');
+				writeln('ingrese mes: ');
 				readln(elem.mes);
-				writeln;
-				writeln('mes: ', elem.mes);
-				writeln;
-				writeln('íngrese diagnostico: ');
+				writeln('ingrese diagnostico: ');
 				readln(elem.diagnostico);
-				writeln;
-				writeln('diagnostico: ', elem.diagnostico);
-				writeln;
+				writeln('-------------------------');
 			end;
 		end;
 		
@@ -99,10 +90,10 @@ type
 		end;
 		
 	var
-	max:integer;
-	mesmax:integer;
-	i:integer;
-	cant:integer;
+		max:integer;
+		mesmax:integer;
+		i:integer;
+		cant:integer;
 	begin
 		cant:=0;
 		max:=-99;
@@ -120,7 +111,7 @@ type
 	
 		procedure buscarDni(a:arbol; dni:integer; var bool:boolean);
 		begin
-            if a <>nil then begin
+            if (a <>nil) then begin
                 if(dni = a^.dni) then begin
                     bool:=true;
                     buscarDni(a^.hI,dni,bool);
@@ -136,15 +127,16 @@ type
 		end;
 		
 	var
-	dni:integer;
-	i:integer;
-	bool:boolean;
+		dni:integer;
+		i:integer;
+		bool:boolean;
 	begin
 		bool:=false;
+		writeln('-------------------------');
 		writeln('ingrese dni para buscar: ');
 		readln(dni);
+		writeln('-------------------------');
 		while(bool <> true) do begin
-            writeln('estoy aca ');
 			for i:=1 to 12 do begin
 	    		buscarDni(v[i],dni,bool);
             end;
@@ -155,7 +147,7 @@ type
 			writeln('no existe')
 	end;
 var
-v:vector;
+	v:vector;
 begin
 	inicializarV(v);
 	cargarVector(v);

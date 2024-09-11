@@ -42,6 +42,7 @@ TYPE
 
 		procedure leerPedido(var p:pedido);
 		begin
+			writeln('-------------------------');
 			writeln('ingrese el su numero de cliente');
 			readln(p.cod);
 				if (p.cod <> 0) then begin
@@ -51,6 +52,7 @@ TYPE
 					readln(p.cantCombos);
 					writeln('ingrese el monto de su pedido');
 					readln(p.monto);
+					writeln('-------------------------');
 				end;
 		end;
 		
@@ -140,11 +142,17 @@ var
 begin
 	cant:=0;
 	generarArbol(a);
+	writeln('-------------------------');
 	writeln('ingrese el numero de cliente que desea buscar sus pedidos ');
 	readln(numeroCliente);
+	writeln('-------------------------');
 	incisoB(a,numeroCliente,cant);
+	writeln('-------------------------');
 	writeln('la cantidad de pedidos que tiene ese numero de cliente es: ',cant);
 	cant:=0;
+	writeln('-------------------------');
 	incisoC(a,numeroCliente,monto);
+	writeln('-------------------------');
 	writeln('el monto total para ese cliente es de : ',monto);
+	writeln('-------------------------');
 end.

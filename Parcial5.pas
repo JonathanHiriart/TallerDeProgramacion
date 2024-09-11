@@ -43,10 +43,18 @@ end;
 procedure Generar(var v:vector);
     procedure leerConsulta(var c:consulta);
     begin
-        readln(c.dni);
-        readln(c.mes);
-        readln(c.diag);
+        writeln('-------------------------');
+        writeln('ingrese la matricula del medico');
         readln(c.matricula);
+        if (c.matricula <> 0) then begin
+            writeln('ingrese el dni del paciente');
+            readln(c.dni);
+            writeln('ingrese el mes de la consulta');
+            readln(c.mes);
+            writeln('ingrese el diagnostico de la consulta');
+            readln(c.diag);
+            writeln('-------------------------');
+        end;
     end;
 
     procedure llenarV(var a:arbol; c:consulta);
@@ -104,5 +112,8 @@ begin
     max:=0;
     maxmes:=0;
     i:=1;
+    writeln('-------------------------');
     incisioB(v,maxmes,max,i);
+    writeln('el mes con mas atenciones es: ',max);
+    writeln('-------------------------');
 end.

@@ -161,7 +161,6 @@ begin
     readln(anio);
     writeln('-----------------------------------');
     incisoC(a,min,max,anio,cant);
-
     writeln('la cantidad de patentes en es año es de: ',cant);
     writeln('-----------------------------------');
 end.
