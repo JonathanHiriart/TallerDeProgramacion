@@ -1,4 +1,4 @@
-package tema4;
+package tema4.Prac4EJ1;
 
 
 public class Cuadrado extends Figura{

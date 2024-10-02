@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tema4;
+package tema4.Prac4EJ1;
+
+import tema4.Prac4EJ1.Figura;
 
 public class Rectangulo extends Figura{
     private double base;
