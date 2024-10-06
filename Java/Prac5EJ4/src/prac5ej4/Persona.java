@@ -46,7 +46,7 @@ public class Persona {
         this.edad = edad;
     }
     public String toString(){
-        String aux= "nombre"+ this.nombre+
+        String aux= " nombre: "+ this.nombre+
                     " dni: " + this.dni + 
                     " edad: "+ this.edad;
         return aux;

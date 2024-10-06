@@ -16,7 +16,7 @@ public class Corista extends Persona{
 
     public Corista(int tonoFundamental, String nombre, int dni, int edad) {
         super(nombre, dni, edad);
-        setTonoFundamental(tonoFundamental);
+        this.tonoFundamental= tonoFundamental ;
     }
 
 //----------------Constructor---------------------------- 

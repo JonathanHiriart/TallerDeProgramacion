@@ -19,38 +19,13 @@ public class CoroSemiCircular extends Coro{
         super(nombre, director, cantCoristas);
         this.cantCoristas = 0;
         this.max = max;
-        setCoristas(new Corista[max]);
+        this.coristas = new Corista[max];
     }
-
-
-//----------------Get and set----------------------------     
-    public Corista[] getCoristas() {
-        return coristas;
-    }
-
-    public void setCoristas(Corista[] coristas) {
-        this.coristas = coristas;
-    }
-
-    public int getCantCoristas() {
-        return cantCoristas;
-    }
-
-    public void setCantCoristas(int cantCoristas) {
-        this.cantCoristas = cantCoristas;
-    }
-
-    public int getMax() {
-        return max;
-    }
-
-    public void setMax(int max) {
-        this.max = max;
-    }
+    
 //----------------Metodos----------------------------     
     public void agregarCorista(Corista persona){
-        if(cantCoristas<max){
-            getCoristas()[cantCoristas]=persona;
+        if(this.cantCoristas<this.max){
+            this.coristas[cantCoristas]=persona;
             cantCoristas++;
         }
         else {
@@ -69,9 +44,9 @@ public class CoroSemiCircular extends Coro{
     public boolean estaOrdenado(){
         boolean estaOrdenado = true;
         int i=0,mayor=999999999;
-        while(estaOrdenado ==true && i< (getMax()-1) ){
-            if (mayor > (getCoristas()[i].getTonoFundamental())){
-                mayor= getCoristas()[i].getTonoFundamental();// acutalizo el max
+        while(estaOrdenado ==true && i<this.max ){
+            if (mayor > this.coristas[i].getTonoFundamental()){
+                mayor= this.coristas[i].getTonoFundamental();// acutalizo el max
                 estaOrdenado=true;
                 i++;
             } else 
@@ -80,11 +55,12 @@ public class CoroSemiCircular extends Coro{
         return estaOrdenado;
     }
     
-    
-    
     public String toString(){
-        String aux = "El grupo de coristas son : ``";
-    
+        String aux = "El grupo de coristas son : \n";
+        int i;
+        for(i=0;i< this.max;i++){
+              aux +=this.coristas[i].toString()+ "\n";
+        }
         return aux;
     }
 }

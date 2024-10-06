@@ -10,66 +10,22 @@ package prac5ej4;
  * @author Yoni
  */
 public class CoroPorHileras extends Coro{
-    private int filas,cantCoristasPorFila;
+    private int filas;
     private Corista[][] coristas;
     private int max,totalAñadidos;
+    private Director dire;
 
 //----------------Constructor----------------------------       
 
-    public CoroPorHileras(int filas, int cantCoristasPorFila, String nombre, Director director, int cantCoristas) {
-        super(nombre, director, cantCoristas);
+    public CoroPorHileras(int filas, String nombre, Director director) {
+        super(nombre, director, filas*filas);
         this.filas = filas;
-        this.cantCoristasPorFila = cantCoristasPorFila;
-        this.coristas = new Corista[filas][cantCoristasPorFila];
-        this.max = cantCoristas;
+        this.coristas = new Corista[filas][filas];
+        this.max= 0;
+        this.max = filas*filas;
         this.totalAñadidos = 0;
-    }    
-    
-//----------------Get and set----------------------------   
-    public int getFilas() {
-        return filas;
+        this.dire= director;
     }
-
-    public void setFilas(int filas) {
-        this.filas = filas;
-    }
-
-    public int getCantCoristasPorFila() {
-        return cantCoristasPorFila;
-    }
-
-    public void setCantCoristasPorFila(int cantCoristasPorFila) {
-        this.cantCoristasPorFila = cantCoristasPorFila;
-    }
-
-    public Corista[][] getCoristas() {
-        return coristas;
-    }
-
-    public void setCoristas(Corista[][] coristas) {
-        this.coristas = coristas;
-    }
-
-    public int getMax() {
-        return max;
-    }
-
-    public void setMax(int max) {
-        this.max = max;
-    }
-
-    public int getTotalAñadidos() {
-        return totalAñadidos;
-    }
-
-    public void setTotalAñadidos(int totalAñadidos) {
-        this.totalAñadidos = totalAñadidos;
-    }
-    
-    
-    
-    
-    
     
 //----------------Metodos----------------------------   
     
@@ -79,10 +35,10 @@ public class CoroPorHileras extends Coro{
         int i=0;
         int j=0;
         if (!estalleno()){
-            while(agrego!= false && i < getFilas()){
-                while (agrego!= false && j < getCantCoristasPorFila()){
-                    if (getCoristas()[i][j]==null){
-                        getCoristas()[i][j]=persona;
+            while(agrego == false && i < this.filas){
+                while (agrego == false && j < this.filas){
+                    if (this.coristas[i][j]== null){
+                        this.coristas[i][j]= persona;
                         agrego=true;
                         totalAñadidos++;
                     }else{
@@ -95,48 +51,59 @@ public class CoroPorHileras extends Coro{
         }
         if (agrego==true){
             System.out.println("el corista se agrego correctamente");
-        }else {
+        }else{
             System.out.println("lo siento el grupo ya esta lleno");
         }
     }
 
     public boolean estalleno(){// true si no hay lugar | false si hay lugar
         boolean lleno=true;
-        if(totalAñadidos<max){
+        if(totalAñadidos < max ){
             lleno=false;
         }
         return lleno;
     }
     
     
-    public boolean estaOrdenado(){
+    public boolean estaOrdenado() {
         boolean estaOrdenado = true;
-        int i=0,j=0,actual=getCoristas()[i][0].getTonoFundamental();
-        while(estaOrdenado ==true && i< (getFilas()-1)){
-            while (estaOrdenado== true && j<getCantCoristasPorFila()- 1){
-                if (actual != (getCoristas()[i][0].getTonoFundamental())){
-                    estaOrdenado=true;
-                } else 
-                    {estaOrdenado=false;}  
+        int i = 0, j = 0;
+        while (estaOrdenado && i < this.filas) {
+            int actual = this.coristas[i][0].getTonoFundamental(); 
+            j = 1; 
+            while (estaOrdenado && j < this.filas) {
+                if (this.coristas[i][j].getTonoFundamental() != actual) {
+                    estaOrdenado = false;
+                }
+                j++;
             }
-            j=0;
             i++;
-            actual=getCoristas()[i][0].getTonoFundamental();
         }
-        
-        // reinicio y recorro laprimera columna 
-        i=0;
-        j=0;
-        int max=getCoristas()[0][j].getTonoFundamental();
-        while (estaOrdenado == true && j < (getCantCoristasPorFila()-1)){
-            if (max > getCoristas()[0][j].getTonoFundamental() ){
-                max = getCoristas()[0][j].getTonoFundamental();
+
+        // Verificar que las columnas vayan de mayor a menor 
+        i = 1;
+        while (estaOrdenado && i < this.filas) {
+            // itero las filas me quedo en la columna 0 
+            if (this.coristas[i - 1][0].getTonoFundamental() < this.coristas[i][0].getTonoFundamental()) {
+                estaOrdenado = false;
             }
-            else {
-                estaOrdenado =false;
-            }
-            j++;
+            i++;
         }
+
         return estaOrdenado;
+    }
+    
+    
+    public String toString(){
+        String aux = "El grupo esta compuesta por: \n";
+        aux +=this.dire.toString()+"\n";
+        aux += "El grupo de coristas son : \n";
+        int i,j;
+        for(i=0;i < this.filas;i++){
+            for(j=0; j < this.filas; j++){
+                aux+=this.coristas[i][j].toString()+ "\n";
+            }
+        }
+        return aux;
     }
 }
