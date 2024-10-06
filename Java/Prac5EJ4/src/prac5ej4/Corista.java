@@ -29,7 +29,8 @@ public class Corista extends Persona{
         this.tonoFundamental = tonoFundamental;
     }
     public String toString(){
-        String aux = super.toString()+ " Tono fundamental: " + this.tonoFundamental ;
+        String aux = super.toString()+ 
+                    " Tono fundamental: " + this.tonoFundamental ;
         return aux;
     }
     

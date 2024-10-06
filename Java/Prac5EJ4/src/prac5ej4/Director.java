@@ -30,8 +30,8 @@ public class Director extends Persona{
         this.antiguedad = antiguedad;
     }
     public String toString(){
-        String aux ="El director: "+ super.toString() +
-                    " antiguedad: "+ this.antiguedad;
+        String aux = super.toString() +
+                    " antiguedad: "+ this.antiguedad+ "\n";
         return aux;
     }
 }

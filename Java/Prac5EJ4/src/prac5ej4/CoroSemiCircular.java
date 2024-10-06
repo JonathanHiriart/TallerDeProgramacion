@@ -15,8 +15,8 @@ public class CoroSemiCircular extends Coro{
     
 //----------------Constructor----------------------------    
 
-    public CoroSemiCircular(int max, String nombre, Director director, int cantCoristas) {
-        super(nombre, director, cantCoristas);
+    public CoroSemiCircular(int max, String nombre, Director director) {
+        super(nombre, director, max);
         this.cantCoristas = 0;
         this.max = max;
         this.coristas = new Corista[max];
@@ -27,6 +27,7 @@ public class CoroSemiCircular extends Coro{
         if(this.cantCoristas<this.max){
             this.coristas[cantCoristas]=persona;
             cantCoristas++;
+            System.out.println("se ha ingresado correctamente");
         }
         else {
             System.out.println("no se puede añadir ya esta lleno el grupo");
@@ -56,10 +57,12 @@ public class CoroSemiCircular extends Coro{
     }
     
     public String toString(){
-        String aux = "El grupo de coristas son : \n";
+        String aux= super.toString();
         int i;
         for(i=0;i< this.max;i++){
-              aux +=this.coristas[i].toString()+ "\n";
+            if (this.coristas[i] != null) { 
+                aux+= this.coristas[i].toString()+ "\n";
+            }
         }
         return aux;
     }

@@ -12,7 +12,7 @@ import PaqueteLectura.Lector;
 public class Prac5EJ4 {
     public static void main(String[] args) {
         Director dire = new Director(25,"negro",44489,30);
-        CoroPorHileras coro1 =new CoroPorHileras(2,"Labanda de los trolos", dire);
+        CoroPorHileras coro1 =new CoroPorHileras(2,"El profesor runco me chupa la pija", dire);
         Corista p1= new Corista(5, "kavo",2, 21);
         Corista p2= new Corista(5, "fermin",1, 22);
         Corista p3= new Corista(3, "juan",3, 23);
@@ -34,6 +34,19 @@ public class Prac5EJ4 {
             System.out.println("no esta ordenado");
         }
         System.out.println(coro1.toString());
+        
+        CoroSemiCircular coro2 = new CoroSemiCircular(10, "El joaquin bogado se la re come", dire);
+        coro2.agregarCorista(p1);
+        coro2.agregarCorista(p2);
+        coro2.agregarCorista(p3);
+        coro2.agregarCorista(p4);
+        coro2.agregarCorista(p5);
+        if (coro2.estaOrdenado()){
+            System.out.println("si esta ordenado ");
+        }else {
+            System.out.println("no esta ordenado");
+        }
+        System.out.println(coro2.toString());
     }
     
 }

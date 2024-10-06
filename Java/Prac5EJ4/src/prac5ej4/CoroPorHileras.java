@@ -93,11 +93,9 @@ public class CoroPorHileras extends Coro{
         return estaOrdenado;
     }
     
-    
+    @Override // sobre escribir el toString el coro.java
     public String toString(){
-        String aux = "El grupo esta compuesta por: \n";
-        aux +=this.dire.toString()+"\n";
-        aux += "El grupo de coristas son : \n";
+        String aux = super.toString();
         int i,j;
         for(i=0;i < this.filas;i++){
             for(j=0; j < this.filas; j++){

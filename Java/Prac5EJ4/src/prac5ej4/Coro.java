@@ -12,7 +12,6 @@ package prac5ej4;
 public abstract class Coro {
     private String nombre;
     private Director director;
-    private Corista[] serieDeCoristas;
     private int cantCoristas;
     
 //----------------Constructor----------------------------     
@@ -20,7 +19,6 @@ public abstract class Coro {
     public Coro(String nombre, Director director, int cantCoristas) {
         this.nombre = nombre;
         this.director = director;
-        this.serieDeCoristas = new Corista[cantCoristas];
         this.cantCoristas = cantCoristas;
     }
 
@@ -30,9 +28,9 @@ public abstract class Coro {
     
     
     public String toString(){
-        String aux = ""; 
-               aux = "Director;" + this.director.toString() + 
-                     "Cororistas " + this.serieDeCoristas.toString();
+        String aux = "El coro " + this.nombre +" esta conformado por \n" ; 
+               aux += "Director: " + this.director.toString() + 
+                     "el Grupo de coristas: \n";
         return aux;
     }
 }
