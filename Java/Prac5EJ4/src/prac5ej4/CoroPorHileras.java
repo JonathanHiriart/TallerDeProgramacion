@@ -68,6 +68,7 @@ public class CoroPorHileras extends Coro{
     public boolean estaOrdenado() {
         boolean estaOrdenado = true;
         int i = 0, j = 0;
+        // verificar si todos los elementos de la fila son iguales 
         while (estaOrdenado && i < this.filas) {
             int actual = this.coristas[i][0].getTonoFundamental(); 
             j = 1; 
