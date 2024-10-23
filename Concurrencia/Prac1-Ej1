@@ -1,0 +1,35 @@
+programa Ejercicio1
+procesos
+  proceso  juntarFlores(E numeroAV:numero)
+  variables
+    esqSinFlor:numero
+  comenzar 
+    esqSinFlor:=0
+    Pos(numeroAV,1)
+    repetir 99
+      si (HayFlorEnLaEsquina)
+        tomarFlor
+      sino 
+        esqSinFlor:=esqSinFlor + 1
+      mover
+    si (HayFlorEnLaEsquina)
+      tomarFlor
+    sino 
+      esqSinFlor:=esqSinFlor + 1  
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+    Informar(esqSinFlor)     
+  fin 
+areas
+  ciudad:AreaP(1,1,100,100)
+robots  
+  robot florero
+  comenzar
+    juntarFlores(1)
+  fin
+variables
+  rb1:florero
+comenzar 
+  AsignarArea(rb1,ciudad)
+  Iniciar(rb1,1,1)
+fin
