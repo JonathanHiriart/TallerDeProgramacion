@@ -1,0 +1,97 @@
+programa ejercicio1
+procesos
+  proceso jntpapel(ES papel:numero)
+  comenzar  
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      papel:=papel+ 1       
+  fin
+  proceso jntflor (ES flor:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor 
+      flor:=flor + 1
+  fin
+areas
+  flore:AreaPC (1,1,5,10)
+  papel: AreaPC(6,1,10,9)
+  reposoPapel:AreaPC(8,10,9,10)
+  reposoFlor: AreaPC(6,10,7,10)
+  depositar:AreaC(10,10,10,10)
+robots
+  robot papelero
+  variables
+    posca,posav,posavini,poscaini,papel:numero
+  comenzar
+    papel:=0
+    poscaini:=PosCa
+    posavini:=PosAv
+    posca:=0
+    posav:=0
+    repetir 3
+      Random(posca,1,9)
+      Random(posav,6,10)
+      BloquearEsquina(posav,posca)
+      Pos(posav,posca)
+      jntpapel(papel)
+      LiberarEsquina(posav,posca)
+    repetir papel
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      si(HayPapelEnLaBolsa)
+        depositarPapel
+      Pos(posavini,poscaini)
+      LiberarEsquina(10,10)
+    Pos(posavini,poscaini)  
+  fin
+  robot florero
+  variables
+    posca,posav,posavini,poscaini,flores:numero
+  comenzar 
+    flores:=0
+    posca:=0
+    posav:=0
+    poscaini:=PosCa
+    posavini:=PosAv
+    repetir 5
+      Random(posca,1,10)
+      Random(posav,1,5)
+      BloquearEsquina(posav,posca)
+      Pos(posav,posca)
+      jntflor(flores)
+      LiberarEsquina(posav,posca)
+    repetir flores
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      si(HayFlorEnLaBolsa)
+        depositarFlor
+      Pos(posavini,poscaini)
+      LiberarEsquina(10,10)
+    Pos(posavini,poscaini)
+  fin
+variables
+  f1: florero
+  f2: florero
+  p1: papelero
+  p2: papelero
+comenzar
+  AsignarArea(f1, flore)
+  AsignarArea(f1, depositar)
+  AsignarArea(f1, reposoFlor)
+  
+  AsignarArea(f2, flore)
+  AsignarArea(f2, depositar)
+  AsignarArea(f2, reposoFlor)
+  
+  AsignarArea(p1, depositar)
+  AsignarArea(p1, reposoPapel)
+  AsignarArea(p1, papel)
+  
+  AsignarArea(p2, depositar)
+  AsignarArea(p2, reposoPapel)
+  AsignarArea(p2, papel)
+  Iniciar(p1, 8,10)
+  Iniciar(p2, 9,10)
+  Iniciar(f1, 6,10)
+  Iniciar(f2, 7,10)
+fin

@@ -1,0 +1,146 @@
+
+programa Ejercicio5
+procesos
+  proceso limipiar (ES f:numero;ES p:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina| HayFlorEnLaEsquina)
+      si (HayPapelEnLaEsquina)
+        tomarPapel
+        p:=p+1
+      si (HayFlorEnLaEsquina)  
+        tomarFlor
+        f:=f +1
+  fin
+areas
+  vigi: AreaP (1,1,1,1)
+  zona: AreaPC (25,25,75,75)
+  reposo: AreaP(25,1,40,1)
+robots
+
+  robot fiscalizador
+  variables
+    puede:boolean
+    quien,inf,sup,f,p,tj1,tj2,tj3,tj4,max,ganador,cont:numero
+  comenzar
+    inf:=1
+    sup:=4
+    max:=0
+    tj1:=0
+    tj2:=0
+    tj3:=0
+    tj4:=0
+    cont:=10
+    puede:=F  
+    repetir 10 
+      Random(quien,inf,sup)
+      Informar(quien)
+      si (quien=1)
+        EnviarMensaje(quien,rb1)
+      sino 
+        si (quien=2)
+          EnviarMensaje(quien,rb2)
+        sino 
+          si(quien=3)
+            EnviarMensaje(quien,rb3)
+          sino 
+            si (quien=4)
+              EnviarMensaje(quien,rb4)
+     {----------------------- reciba--------------------} 
+      RecibirMensaje(quien,*)
+      si (quien=1)
+        RecibirMensaje(f,rb1)
+        RecibirMensaje(p,rb1)
+        tj1:=tj1 + f + p
+      sino 
+        si (quien=2)
+          RecibirMensaje(f,rb2)
+          RecibirMensaje(p,rb2)
+          tj2:=tj2 + f + p
+        sino 
+          si(quien=3)
+            RecibirMensaje(f,rb3)
+            RecibirMensaje(p,rb3)
+            tj3:=tj3 + f + p
+          sino 
+            si (quien=4)
+              RecibirMensaje(f,rb4)
+              RecibirMensaje(p,rb4)
+              tj4:=tj4 + f + p
+      cont:=cont - 1
+      Informar(cont)
+    {----------------------- max --------------------}           
+    si (tj1>max)
+      max:=tj1
+      ganador:=1
+    sino 
+      si (tj2>max)
+        max:=tj2
+        ganador:=2
+      sino 
+        si(tj3>max)
+          max:=tj3
+          ganador:=3
+        sino 
+          si (tj4>max)
+            max:=tj4
+            ganador:=4             
+    Informar(ganador)
+  fin
+  robot laburante
+  variables
+    puede:boolean
+    x,y,f,p,quien,inf,sup:numero
+  comenzar
+    RecibirMensaje(puede,vigilante)
+    si(puede=V)
+      RecibirMensaje(quien,vigilante)
+      f:=0
+      p:=0
+      inf:=25
+      sup:=75
+      Random(x,inf,sup)
+      Random(y,inf,sup)
+      Pos(x,y)
+      limipiar(f,p)
+      si (quien = 1)
+        Pos(25,1)
+      sino 
+        si(quien= 2)
+          Pos(30,1)
+        sino 
+          si(quien= 3)
+            Pos(35,1)
+          sino 
+            si(quien=4)
+              Pos(40,1)
+    EnviarMensaje(quien,vigilante)
+    EnviarMensaje(f,vigilante)
+    EnviarMensaje(p,vigilante)
+  fin
+variables
+  vigilante: fiscalizador
+  rb1: laburante
+  rb2: laburante
+  rb3: laburante
+  rb4: laburante 
+
+comenzar
+  AsignarArea(vigilante, vigi)
+  AsignarArea(rb1, zona)
+  AsignarArea(rb1, reposo)
+  AsignarArea(rb2, zona)
+  AsignarArea(rb2, reposo)
+
+  AsignarArea(rb3, zona)
+  AsignarArea(rb3, reposo)
+  AsignarArea(rb4, zona)
+  AsignarArea(rb4, reposo)
+
+  Iniciar(vigilante, 1,1)
+  Iniciar(rb1, 25,1)
+  Iniciar(rb2, 30,1)
+
+  Iniciar(rb3, 35,1)
+  Iniciar(rb4, 40,1)
+
+fin

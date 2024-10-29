@@ -1,0 +1,65 @@
+programa Ejercicio1
+procesos
+  proceso jntFlor(ES flor:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flor:= flor +1
+  fin
+  proceso recorrer(ES flor:numero)
+  variables
+    flor:numero
+  comenzar
+    flor:=0
+    repetir 9
+      jntFlor(flor)
+      mover
+    jntFlor(flor)
+  fin
+areas
+  pista1: AreaP (1,1,1,10)
+  pista2: AreaP (2,11,2,20)
+  fisca: AreaP (2,1,2,1)
+robots
+
+  robot competidor
+  variables 
+    quien,flor:numero
+  comenzar
+    flor:=0
+    RecibirMensaje(quien,rb3)
+    recorrer(flor)
+    EnviarMensaje(quien,rb3)
+    EnviarMensaje(flor,rb3)
+  fin
+  
+  robot fiscalizador
+  variables
+    ganador,max,flor,quien:numero
+  comenzar
+    max:=0
+    EnviarMensaje(1,rb1)
+    EnviarMensaje(2,rb2)
+    repetir 2
+      RecibirMensaje(quien,*)
+      si(quien=1)
+        RecibirMensaje(flor,rb1)
+      sino
+        RecibirMensaje(flor, rb2)
+      si (flor>max)
+        max:=flor
+        ganador:=quien
+    Informar(ganador)
+  fin
+variables
+  rb1: competidor
+  rb2: competidor
+  rb3: fiscalizador
+comenzar
+  AsignarArea(rb1, pista1)
+  AsignarArea(rb2, pista2)
+  AsignarArea(rb3, fisca)
+  Iniciar(rb3, 2,1)
+  Iniciar(rb2, 2,11)
+  Iniciar(rb1, 1,1)
+fin
