@@ -34,6 +34,7 @@ robots
       BloquearEsquina(posav,posca)
       Pos(posav,posca)
       jntpapel(papel)
+      Pos(posavini,poscaini)
       LiberarEsquina(posav,posca)
     repetir papel
       BloquearEsquina(10,10)
@@ -59,6 +60,7 @@ robots
       BloquearEsquina(posav,posca)
       Pos(posav,posca)
       jntflor(flores)
+      Pos(posavini,poscaini)
       LiberarEsquina(posav,posca)
     repetir flores
       BloquearEsquina(10,10)
@@ -90,6 +92,7 @@ comenzar
   AsignarArea(p2, depositar)
   AsignarArea(p2, reposoPapel)
   AsignarArea(p2, papel)
+  
   Iniciar(p1, 8,10)
   Iniciar(p2, 9,10)
   Iniciar(f1, 6,10)
