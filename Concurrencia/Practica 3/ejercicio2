@@ -1,0 +1,153 @@
+{Bienvenidos al entorno CMRE.
+Lo siguiente es un código de ejemplo que implementa un
+proceso que recibe un número de avenida como parámetro,
+se posiciona en esa avenida y la recorre.}
+
+programa ejercicio2
+procesos
+  proceso izquierda(ES cant:numero; E elem:numero)
+  comenzar 
+    repetir 3
+      derecha
+    si (elem=0)
+      jntpapel(cant)
+    sino 
+      jntflor(cant)
+  fin
+  proceso derechaa(ES cant:numero; E elem:numero)
+  comenzar
+    derecha
+    si (elem=0)
+      jntpapel(cant)
+    sino
+      jntflor(cant)
+  fin
+  proceso jntflor(ES flor:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flor:=flor + 1
+  fin
+  proceso jntpapel(ES papel:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papel:= papel +1 
+  fin 
+  proceso carrera(ES cant:numero;E elem:numero; ES quien:numero)
+  variables
+    x:numero
+    medio:boolean
+  comenzar
+    medio:=F
+    x:=5
+    inicio(x,cant, elem)
+    medio(x,cant,elem)
+    x:=2
+    final(x,cant,elem)
+    EnviarMensaje(quien,jefe)
+  fin
+  proceso final(ES x:numero;ES cant:numero; E elem:numero)
+  comenzar
+    mientras ~(x=5)
+      repetir x
+        mover
+      si (elem=0)
+        izquierda(cant,elem)
+      sino
+        derechaa(cant,elem)
+      repetir (x+1)
+        mover
+      si (elem=0)
+        derechaa(cant,elem)
+      sino
+        izquierda(cant,elem)
+      x:= x + 1 
+    repetir 5
+      mover
+  fin
+  
+  proceso medio (ES x:numero;ES cant:numero; E elem:numero)
+  comenzar
+    mover
+    si (elem=0)
+      derechaa(cant,elem)
+    sino
+      izquierda(cant,elem)
+    BloquearEsquina(16,16)  
+    mover
+    repetir 2
+      derechaa(cant,elem)
+    mover
+    LiberarEsquina(16,16)
+    repetir 2
+      mover
+    si (elem=0)
+      derechaa(cant,elem)
+    sino
+      izquierda(cant,elem)    
+  fin
+  proceso inicio(ES x:numero;ES cant:numero; E elem:numero)
+  comenzar
+    mientras ~(x=1)
+      repetir x
+        mover
+      si (elem=0)
+        derechaa(cant,elem)
+      sino 
+        izquierda(cant,elem)
+      repetir x
+        mover
+      si (elem=0)
+        izquierda(cant,elem)
+      sino 
+        derechaa(cant,elem)
+      x:=x -1
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot papelero
+  variables
+    papel,cant,quien:numero
+  comenzar
+    papel:=0
+    cant:=0
+    RecibirMensaje(quien,jefe)
+    carrera(cant,papel,quien)
+  fin
+  robot florero
+  variables
+    flor,cant,quien:numero
+  comenzar
+    flor:=1
+    cant:=0
+    RecibirMensaje(quien,jefe)
+    carrera(cant,flor,quien)
+  fin
+  robot fisca
+  variables
+    quien:numero
+  comenzar
+    EnviarMensaje(1,p1)
+    EnviarMensaje(2,f1)
+    repetir 2
+      RecibirMensaje(quien,*)
+    si(quien = 1)
+      Informar("gano el competidor",2)
+    sino
+      Informar("gano el competidor",1)
+  fin
+variables
+  p1:papelero
+  f1:florero
+  jefe:fisca
+comenzar
+  {el papel es 0 flor es 1}
+  AsignarArea(p1, ciudad)
+  AsignarArea(f1, ciudad)
+  AsignarArea(jefe, ciudad)
+  Iniciar(jefe, 15,1)
+  Iniciar(p1, 1,1)
+  Iniciar(f1, 31,1)
+fin
