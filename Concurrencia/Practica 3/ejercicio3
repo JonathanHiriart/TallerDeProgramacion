@@ -1,0 +1,94 @@
+programa ejercicio3
+procesos
+  proceso jntflor(ES flor:numero; ES ok:boolean)
+  comenzar
+    si (HayFlorEnLaEsquina)
+      tomarFlor
+      ok:=V
+      flor:=flor+ 1
+    sino
+      ok:=F
+  fin
+areas
+  zona: AreaC (2,2,10,10)
+  reposo: AreaC(1,1,5,1)
+robots
+  robot florero
+  variables
+    quien,cant,avi,cai,av,ca:numero
+    ok:boolean
+  comenzar
+    avi:=PosAv
+    cai:=PosCa
+    cant:=0
+    ok:=V
+    RecibirMensaje(quien,jefe)
+    RecibirMensaje(av,jefe)
+    RecibirMensaje(ca,jefe)
+    mientras (ok=V)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      jntflor(cant,ok)
+      Pos(avi,cai)
+      LiberarEsquina(av,ca)
+    EnviarMensaje(quien,jefe)
+    EnviarMensaje(cant,jefe)
+  fin
+  robot lagorra
+  variables
+    quien,posav,posca,cant,max,ganador:numero
+  comenzar
+    max:=0
+    EnviarMensaje(1,f1)
+    EnviarMensaje(2,f2)
+    EnviarMensaje(3,f3)
+    EnviarMensaje(4,f4)
+    Random(posav,2,10)
+    Random(posca,2,10)
+    EnviarMensaje(posav,f1)
+    EnviarMensaje(posav,f2)
+    EnviarMensaje(posav,f3)
+    EnviarMensaje(posav,f4)
+    EnviarMensaje(posca,f1)
+    EnviarMensaje(posca,f2)
+    EnviarMensaje(posca,f3)
+    EnviarMensaje(posca,f4)
+    repetir 4
+      RecibirMensaje(quien,*)
+      si(quien=1)
+        RecibirMensaje(cant,f1)
+      sino
+        si(quien=2)
+          RecibirMensaje(cant,f2)
+        sino
+          si(quien=3)
+            RecibirMensaje(cant,f3)
+          sino
+            RecibirMensaje(cant,f4)
+      si (cant>max)
+        max:=cant
+        ganador:=quien
+    Informar(ganador)  
+  fin
+variables
+  f1: florero
+  f2: florero
+  f3: florero
+  f4: florero
+  jefe:lagorra
+comenzar
+  AsignarArea(f1, zona)
+  AsignarArea(f2, zona)
+  AsignarArea(f3, zona)
+  AsignarArea(f4, zona)
+  AsignarArea(f1, reposo)
+  AsignarArea(f2, reposo)
+  AsignarArea(f3, reposo)
+  AsignarArea(f4, reposo)
+  AsignarArea(jefe, reposo)
+  Iniciar(jefe, 1,1)
+  Iniciar(f1, 2,1)
+  Iniciar(f2, 3,1)
+  Iniciar(f3, 4,1)
+  Iniciar(f4, 5,1)  
+fin
