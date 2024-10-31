@@ -57,28 +57,10 @@ robots
     repetir 4
       RecibirMensaje(quien,*)
     Informar(quien)  
-    si (quien=1)
-      EnviarMensaje(quien,f1)
-      EnviarMensaje(quien,f2)
-      EnviarMensaje(quien,f3)
-      EnviarMensaje(quien,f4)
-    sino
-      si (quien=2)
-        EnviarMensaje(quien,f2)
-        EnviarMensaje(quien,f1)
-        EnviarMensaje(quien,f3)
-        EnviarMensaje(quien,f4)
-      sino
-        si (quien=3)
-          EnviarMensaje(quien,f3)
-          EnviarMensaje(quien,f1)
-          EnviarMensaje(quien,f2)
-          EnviarMensaje(quien,f4)        
-        sino
-          EnviarMensaje(quien,f4)
-          EnviarMensaje(quien,f1)
-          EnviarMensaje(quien,f2)
-          EnviarMensaje(quien,f3)
+    EnviarMensaje(quien,f1)
+    EnviarMensaje(quien,f2)
+    EnviarMensaje(quien,f3)
+    EnviarMensaje(quien,f4)
   fin
 variables
   f1: florero
