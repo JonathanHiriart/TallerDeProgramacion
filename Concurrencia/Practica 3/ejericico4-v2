@@ -1,0 +1,111 @@
+programa ejercicio4
+procesos
+  proceso jntflor(ES cant:numero; ES ok:boolean)
+  comenzar
+    si(HayFlorEnLaEsquina)
+      tomarFlor
+      cant:=cant +1
+    sino 
+      ok:=F
+  fin
+  proceso dpflor(ES cant:numero)
+  comenzar
+    si(HayFlorEnLaBolsa)
+      depositarFlor
+      cant:=cant - 1
+  fin
+areas
+  limpieza:AreaPC(10,10,10,10)
+  free: AreaPC(11,11,11,11)
+  reposo: AreaPC (9,9,9,12)
+  repJefe: AreaP(1,1,1,1)
+robots
+  robot florero
+  variables
+    avi,cai,cant,quien,gane:numero
+    ok:boolean
+  comenzar
+    ok:=V
+    avi:=PosAv
+    cai:=PosCa
+    RecibirMensaje(quien,patron)
+    mientras (ok=V)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      jntflor(cant,ok)
+      Pos(avi,cai)      
+      LiberarEsquina(10,10)
+      si (ok=V)
+        BloquearEsquina(11,11)
+        Pos(11,11)
+        dpflor(cant)
+        Pos(avi,cai)
+        LiberarEsquina(11,11)
+    EnviarMensaje(quien ,patron)
+    RecibirMensaje(gane, patron)
+    si (quien=gane)
+      Pos(11,11)
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+  fin
+  robot jefe
+  variables
+    quien,ok:numero
+  comenzar
+    EnviarMensaje(1,f1)
+    EnviarMensaje(2,f2)
+    EnviarMensaje(3,f3)
+    EnviarMensaje(4,f4)
+    repetir 4
+      RecibirMensaje(quien,*)
+    Informar(quien)  
+    si (quien=1)
+      EnviarMensaje(quien,f1)
+      EnviarMensaje(quien,f2)
+      EnviarMensaje(quien,f3)
+      EnviarMensaje(quien,f4)
+    sino
+      si (quien=2)
+        EnviarMensaje(quien,f2)
+        EnviarMensaje(quien,f1)
+        EnviarMensaje(quien,f3)
+        EnviarMensaje(quien,f4)
+      sino
+        si (quien=3)
+          EnviarMensaje(quien,f3)
+          EnviarMensaje(quien,f1)
+          EnviarMensaje(quien,f2)
+          EnviarMensaje(quien,f4)        
+        sino
+          EnviarMensaje(quien,f4)
+          EnviarMensaje(quien,f1)
+          EnviarMensaje(quien,f2)
+          EnviarMensaje(quien,f3)
+  fin
+variables
+  f1: florero
+  f2: florero
+  f3: florero
+  f4: florero
+  patron:jefe
+comenzar
+  AsignarArea(f1, reposo)
+  AsignarArea(f1, free)
+  AsignarArea(f1, limpieza)
+  AsignarArea(f2, reposo)
+  AsignarArea(f2, free)
+  AsignarArea(f2, limpieza)
+  AsignarArea(f3, reposo)
+  AsignarArea(f3, free)
+  AsignarArea(f3, limpieza)
+  AsignarArea(f4, reposo)
+  AsignarArea(f4, free)
+  AsignarArea(f4, limpieza)
+  AsignarArea(patron, repJefe)
+  Iniciar(patron,1,1)
+  Iniciar(f1,9,9)
+  Iniciar(f2,9,10)
+  Iniciar(f3,9,11)
+  Iniciar(f4,9,12)
+ 
+fin
