@@ -34,7 +34,7 @@ robots
     cant:=0
     ok:=V
     RecibirMensaje(quien,fisca)
-    mientras ((ok = V )& (ca < 100))
+    mientras ((ok = V ))
       BloquearEsquina(11,11)
       Pos(11,11)
       jntpapel(cant,ca,ok)

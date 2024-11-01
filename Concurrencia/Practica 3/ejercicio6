@@ -1,0 +1,117 @@
+programa ejercicio6
+procesos
+  proceso intersecion(E tipo:numero; ES cant:numero;ES av:numero; ES ca:numero; E x:numero; E y:numero; ES ok:boolean)
+  comenzar
+    juntar(tipo,cant)
+    BloquearEsquina(x,y) 
+    mover
+    av:=PosAv
+    ca:=PosCa
+    ok:=F
+    juntar(tipo,cant) 
+    mover
+    av:=PosAv
+    ca:=PosCa
+    LiberarEsquina(x,y)
+  fin
+  proceso perimetro(E lado:numero;E tipo:numero;ES cant:numero;ES av:numero; ES ca:numero)
+  variables
+    ok:boolean
+    x,y:numero
+  comenzar
+    ok:=V
+    repetir 4
+      repetir lado 
+        {choque entre el robot 1 y 2}
+        si ((av = 5 & ca=7)|(av=4 & ca = 8))
+          x:=5
+          y:=8
+          intersecion(tipo,cant,av,ca,x,y,ok)
+        {segundo choque entre el robot 1 y 2}
+        sino
+          si ((av=9 & ca = 5)|(av=8 & ca= 6))
+            x:=8
+            y:=5
+            intersecion(tipo,cant,av,ca,x,y,ok)
+        {choque entre el robot 2 y 3}  
+          sino
+            si ((av=8 & ca = 15)|(av= 9 & ca=14))
+              x:=9
+              y:=15
+              intersecion(tipo,cant,av,ca,x,y,ok)
+        {segundo choque entre el robot 2 y 3}
+            sino
+              si ((av=15 & ca = 10)|(av= 14 & ca=9))
+                x:=15
+                y:=9
+                intersecion(tipo,cant,av,ca,x,y,ok)
+        si (ok=V)
+          juntar(tipo,cant)                
+          mover
+        ok:=V
+        av:=PosAv
+        ca:=PosCa
+      derecha  
+  fin
+  proceso juntar(E tipo:numero;ES cant:numero)
+  comenzar
+    si (tipo=1)
+      jntflor(cant)
+    sino
+      si(tipo=2)
+        jntpapel(cant)
+      sino 
+        jntpapel(cant)
+        jntflor(cant)
+  fin
+  proceso jntflor(ES cant:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cant:=cant+1
+  fin
+  proceso jntpapel(ES cant:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cant:=cant +1
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot cuadrado
+  variables
+    av,ca,cant,tipo,lado:numero
+  comenzar
+    cant:=0
+    av:=PosAv
+    ca:=PosCa
+    RecibirMensaje(tipo,jefe)
+    RecibirMensaje(lado,jefe)
+    perimetro(lado,tipo,cant,av,ca)
+  fin
+  robot jefee
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(6,r1)
+    EnviarMensaje(10,r2)
+    EnviarMensaje(7,r3)
+  fin
+variables
+  r1: cuadrado
+  r2: cuadrado
+  r3: cuadrado
+  jefe:jefee
+comenzar
+{tipo 1 para flores, tipo 2 para papeles y tipo 3 para flores y papeles}
+  AsignarArea(jefe, ciudad)
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2, ciudad)
+  AsignarArea(r3, ciudad)
+  Iniciar(r1, 2,2)
+  Iniciar(r2, 5,5)
+  Iniciar(r3, 9,9)
+  Iniciar(jefe, 1,1)
+fin
