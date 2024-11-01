@@ -1,0 +1,96 @@
+programa ejercicio5
+procesos
+  proceso jntpapel(ES cant:numero;ES ca:numero; ES ok:boolean)
+  comenzar
+    si((HayPapelEnLaEsquina )& (ca<100))
+      tomarPapel     
+      cant:=cant +1
+      ok:=V
+    sino
+      ok:=F
+  fin
+  proceso dejarpapel(ES cant:numero)
+  comenzar
+    si(HayPapelEnLaBolsa)
+      depositarPapel
+      cant:=cant -1
+  fin
+  
+areas
+  acp1: AreaP(4,1,4,100)
+  acp2: AreaP(6,1,6,100)
+  acp3: AreaP(8,1,8,100)
+  acp4: AreaP(10,1,10,100)
+  fuente:AreaPC(11,11,11,11)
+  jefe:AreaP(1,1,1,1)
+robots
+  robot competidor
+  variables
+    ok:boolean
+    av,ca,cant,quien:numero
+  comenzar
+    ca:=PosCa
+    av:=PosAv
+    cant:=0
+    ok:=V
+    RecibirMensaje(quien,fisca)
+    mientras ((ok = V )& (ca < 100))
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      jntpapel(cant,ca,ok)
+      Pos(av,ca)
+      LiberarEsquina(11,11)
+      si (cant>0)
+        dejarpapel(cant)
+        mover
+      ca:=PosCa
+    EnviarMensaje(quien,fisca)
+    EnviarMensaje(ca,fisca)
+  fin
+  robot fiscalizador
+  variables
+    quien,cant,max,ganador:numero
+  comenzar
+    EnviarMensaje(1,c1)
+    EnviarMensaje(2,c2)
+    EnviarMensaje(3,c3)
+    EnviarMensaje(4,c4)
+    repetir 4
+      RecibirMensaje(quien,*)
+      si (quien=1)
+        RecibirMensaje(cant,c1)
+      sino
+        si (quien=2)
+          RecibirMensaje(cant,c2)
+        sino
+          si (quien=3)
+            RecibirMensaje(cant,c3)
+          sino
+            RecibirMensaje(cant,c4)
+      si (cant>max)
+        max:=cant
+        ganador:=quien
+    Informar("el ganador es",ganador)
+  fin
+variables
+  c1: competidor
+  c2: competidor
+  c3: competidor
+  c4: competidor
+  fisca: fiscalizador
+comenzar
+  AsignarArea(fisca, jefe)
+  AsignarArea(c1, acp1)
+  AsignarArea(c2, acp2)
+  AsignarArea(c3, acp3)
+  AsignarArea(c4, acp4)
+  AsignarArea(c1, fuente)
+  AsignarArea(c2, fuente)
+  AsignarArea(c3, fuente)
+  AsignarArea(c4, fuente)
+  Iniciar(fisca, 1,1)
+  Iniciar(c1, 4,1)
+  Iniciar(c2, 6,1)
+  Iniciar(c3, 8,1)
+  Iniciar(c4, 10,1)
+fin
