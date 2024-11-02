@@ -1,3 +1,4 @@
+{tipo 1 para flores, tipo 2 para papeles y tipo 3 para flores y papeles}
 programa ejercicio6
 procesos
   proceso intersecion(E tipo:numero; ES cant:numero; E x:numero; E y:numero; ES ok:boolean;ES lado:numero)
@@ -26,28 +27,28 @@ procesos
         si ((PosAv = 5) & (PosCa=7))|((PosAv=4) & (PosCa = 8))
           x:=5
           y:=8
-          Informar("probabilidad de choque",1)
+          {Informar("probabilidad de choque",1)}
           intersecion(tipo,cant,x,y,ok,lado)
         {segundo choque entre el robot 1 y 2}
         sino
           si (((PosAv=9) & (PosCa = 5))|((PosAv=8) & (PosCa= 6)))
             x:=8
             y:=5
-            Informar("probabilidad de choque",2)
+            {Informar("probabilidad de choque",2)}
             intersecion(tipo,cant,x,y,ok,lado)
         {choque entre el robot 2 y 3}  
           sino
             si (((PosAv=8) & (PosCa = 15))|((PosAv= 9) & (PosCa=14)))
               x:=9
               y:=15
-              Informar("probabilidad de choque",3)
+              {Informar("probabilidad de choque",3)}
               intersecion(tipo,cant,x,y,ok,lado)
         {segundo choque entre el robot 2 y 3}
             sino
               si (((PosAv=15) & (PosCa = 10))|((PosAv= 16) & (PosCa=9)))
                 x:=15
                 y:=9
-                Informar("probabilidad de choque",4)
+                {Informar("probabilidad de choque",4)}
                 intersecion(tipo,cant,x,y,ok,lado)
         si (ok=V)
           juntar(tipo,cant)                
@@ -80,22 +81,90 @@ procesos
       tomarPapel
       cant:=cant +1
   fin
+  proceso depositar(E tipo:numero; ES cant:numero)
+  comenzar
+    si (tipo=1)
+      djflor(cant)
+    sino
+      si (tipo=2)
+        djpapel(cant)
+      sino
+        djpapel(cant)
+        djflor(cant)
+  fin
+  proceso djflor(ES cant:numero)
+  comenzar
+    si (HayFlorEnLaBolsa)
+      depositarFlor
+      cant:=cant-1
+  fin
+  proceso djpapel(ES cant:numero)
+  comenzar
+    si (HayPapelEnLaBolsa)
+      depositarPapel
+      cant:=cant-1
+  fin
+  proceso podio(E cant:numero;E tipo:numero;ES pri:numero;ES seg:numero;ES ter:numero;ES cantpri: numero;ES cantseg:numero;ES canter:numero)
+  comenzar
+    si(cant>=cantpri)
+      canter:=cantseg
+      ter:=seg
+      cantseg:=cantpri
+      seg:=pri
+      pri:=tipo
+      cantpri:=cant
+    sino 
+      si (cant>=cantseg)
+        canter:=cantseg
+        ter:=seg
+        cantseg:=cant
+        seg:=tipo
+      sino
+        si (cant>=canter)
+          canter:=cant
+          ter:=tipo
+  fin
+  {tipo 1 para flores, tipo 2 para papeles y tipo 3 para flores y papeles}
+  proceso recorrercalle(E tipo:numero; ES cant:numero)
+  comenzar
+    mientras ((cant>0)&(PosAv<100))
+      depositar(tipo,cant)
+      mover
+  fin
 areas
   areajefe: AreaP(1,1,1,1)
   areacuadrado: AreaPC(2,2,16,16)
+  podio: AreaPC(1,20,100,22)
 robots
   robot cuadrado
   variables
-    av,ca,cant,tipo,lado:numero
+    av,ca,cant,tipo,lado,puesto:numero
   comenzar
     cant:=0
     RecibirMensaje(tipo,jefe)
     RecibirMensaje(lado,jefe)
     perimetro(lado,tipo,cant)
+    EnviarMensaje(tipo,jefe)
+    EnviarMensaje(cant,jefe)
+    RecibirMensaje(puesto,jefe)
+    Pos(1,puesto)
+    derecha
+    recorrercalle(tipo,cant)
+    EnviarMensaje(1,jefe)
   fin
   
   robot jefee
+  variables
+    pri,seg,ter:numero
+    cantpri,cantseg,canter:numero
+    tipo,cant:numero
   comenzar
+    pri:=-1
+    seg:=-2
+    ter:=-3
+    canter:=0
+    cantpri:=0
+    cantseg:=0
     EnviarMensaje(1,r1)
     EnviarMensaje(6,r1)
     
@@ -105,6 +174,37 @@ robots
     EnviarMensaje(3,r3)    
     EnviarMensaje(7,r3)
     
+    repetir 3
+      RecibirMensaje(tipo,*)
+      si (tipo=1)
+        RecibirMensaje(cant,r1)
+      sino
+        si(tipo=2)
+          RecibirMensaje(cant,r2)
+        sino
+          RecibirMensaje(cant , r3)
+      podio(cant,tipo,pri,seg,ter,cantpri,cantseg,canter)
+    si(pri=1)
+      EnviarMensaje(20,r1)
+    sino 
+      si(pri=2)
+        EnviarMensaje(20,r2)
+      sino
+        EnviarMensaje(20,r3)
+    si(seg=1)
+      EnviarMensaje(21,r1)
+    sino 
+      si(seg=2)
+        EnviarMensaje(21,r2)
+      sino
+        EnviarMensaje(21,r3)
+    si(ter=1)
+      EnviarMensaje(22,r1)
+    sino 
+      si(ter=2)
+        EnviarMensaje(22,r2)
+      sino
+        EnviarMensaje(22,r3)        
   fin
 variables
   r1: cuadrado
@@ -117,6 +217,9 @@ comenzar
   AsignarArea(r1, areacuadrado)
   AsignarArea(r2, areacuadrado)
   AsignarArea(r3, areacuadrado)
+  AsignarArea(r1, podio)
+  AsignarArea(r2, podio)
+  AsignarArea(r3, podio)
   Iniciar(r1, 2,2)
   Iniciar(r2, 5,5)
   Iniciar(r3, 9,9)
