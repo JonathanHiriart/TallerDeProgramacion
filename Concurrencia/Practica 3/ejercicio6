@@ -1,57 +1,61 @@
 programa ejercicio6
 procesos
-  proceso intersecion(E tipo:numero; ES cant:numero;ES av:numero; ES ca:numero; E x:numero; E y:numero; ES ok:boolean)
+  proceso intersecion(E tipo:numero; ES cant:numero; E x:numero; E y:numero; ES ok:boolean;ES lado:numero)
   comenzar
     juntar(tipo,cant)
     BloquearEsquina(x,y) 
     mover
-    av:=PosAv
-    ca:=PosCa
+    lado:=lado -1
     ok:=F
     juntar(tipo,cant) 
     mover
-    av:=PosAv
-    ca:=PosCa
+    lado:=lado -1
     LiberarEsquina(x,y)
   fin
-  proceso perimetro(E lado:numero;E tipo:numero;ES cant:numero;ES av:numero; ES ca:numero)
+  proceso perimetro(E lado:numero;E tipo:numero;ES cant:numero)
   variables
     ok:boolean
     x,y:numero
+    aux:numero
   comenzar
     ok:=V
+    aux:=lado
     repetir 4
-      repetir lado 
+      mientras ~(lado=0)
         {choque entre el robot 1 y 2}
-        si ((av = 5 & ca=7)|(av=4 & ca = 8))
+        si ((PosAv = 5) & (PosCa=7))|((PosAv=4) & (PosCa = 8))
           x:=5
           y:=8
-          intersecion(tipo,cant,av,ca,x,y,ok)
+          Informar("probabilidad de choque",1)
+          intersecion(tipo,cant,x,y,ok,lado)
         {segundo choque entre el robot 1 y 2}
         sino
-          si ((av=9 & ca = 5)|(av=8 & ca= 6))
+          si (((PosAv=9) & (PosCa = 5))|((PosAv=8) & (PosCa= 6)))
             x:=8
             y:=5
-            intersecion(tipo,cant,av,ca,x,y,ok)
+            Informar("probabilidad de choque",2)
+            intersecion(tipo,cant,x,y,ok,lado)
         {choque entre el robot 2 y 3}  
           sino
-            si ((av=8 & ca = 15)|(av= 9 & ca=14))
+            si (((PosAv=8) & (PosCa = 15))|((PosAv= 9) & (PosCa=14)))
               x:=9
               y:=15
-              intersecion(tipo,cant,av,ca,x,y,ok)
+              Informar("probabilidad de choque",3)
+              intersecion(tipo,cant,x,y,ok,lado)
         {segundo choque entre el robot 2 y 3}
             sino
-              si ((av=15 & ca = 10)|(av= 14 & ca=9))
+              si (((PosAv=15) & (PosCa = 10))|((PosAv= 16) & (PosCa=9)))
                 x:=15
                 y:=9
-                intersecion(tipo,cant,av,ca,x,y,ok)
+                Informar("probabilidad de choque",4)
+                intersecion(tipo,cant,x,y,ok,lado)
         si (ok=V)
           juntar(tipo,cant)                
           mover
+          lado:=lado -1
         ok:=V
-        av:=PosAv
-        ca:=PosCa
-      derecha  
+      derecha
+      lado:=aux  
   fin
   proceso juntar(E tipo:numero;ES cant:numero)
   comenzar
@@ -77,27 +81,30 @@ procesos
       cant:=cant +1
   fin
 areas
-  ciudad: AreaC (1,1,100,100)
+  areajefe: AreaP(1,1,1,1)
+  areacuadrado: AreaPC(2,2,16,16)
 robots
   robot cuadrado
   variables
     av,ca,cant,tipo,lado:numero
   comenzar
     cant:=0
-    av:=PosAv
-    ca:=PosCa
     RecibirMensaje(tipo,jefe)
     RecibirMensaje(lado,jefe)
-    perimetro(lado,tipo,cant,av,ca)
+    perimetro(lado,tipo,cant)
   fin
+  
   robot jefee
   comenzar
     EnviarMensaje(1,r1)
-    EnviarMensaje(2,r2)
-    EnviarMensaje(3,r3)
     EnviarMensaje(6,r1)
+    
+    EnviarMensaje(2,r2)
     EnviarMensaje(10,r2)
+    
+    EnviarMensaje(3,r3)    
     EnviarMensaje(7,r3)
+    
   fin
 variables
   r1: cuadrado
@@ -106,10 +113,10 @@ variables
   jefe:jefee
 comenzar
 {tipo 1 para flores, tipo 2 para papeles y tipo 3 para flores y papeles}
-  AsignarArea(jefe, ciudad)
-  AsignarArea(r1, ciudad)
-  AsignarArea(r2, ciudad)
-  AsignarArea(r3, ciudad)
+  AsignarArea(jefe, areajefe)
+  AsignarArea(r1, areacuadrado)
+  AsignarArea(r2, areacuadrado)
+  AsignarArea(r3, areacuadrado)
   Iniciar(r1, 2,2)
   Iniciar(r2, 5,5)
   Iniciar(r3, 9,9)
