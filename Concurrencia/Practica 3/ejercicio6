@@ -27,28 +27,28 @@ procesos
         si ((PosAv = 5) & (PosCa=7))|((PosAv=4) & (PosCa = 8))
           x:=5
           y:=8
-          {Informar("probabilidad de choque",1)}
+          Informar("probabilidad de choque",1)
           intersecion(tipo,cant,x,y,ok,lado)
         {segundo choque entre el robot 1 y 2}
         sino
           si (((PosAv=9) & (PosCa = 5))|((PosAv=8) & (PosCa= 6)))
             x:=8
             y:=5
-            {Informar("probabilidad de choque",2)}
+            Informar("probabilidad de choque",2)
             intersecion(tipo,cant,x,y,ok,lado)
         {choque entre el robot 2 y 3}  
           sino
             si (((PosAv=8) & (PosCa = 15))|((PosAv= 9) & (PosCa=14)))
               x:=9
               y:=15
-              {Informar("probabilidad de choque",3)}
+              Informar("probabilidad de choque",3)
               intersecion(tipo,cant,x,y,ok,lado)
         {segundo choque entre el robot 2 y 3}
             sino
               si (((PosAv=15) & (PosCa = 10))|((PosAv= 16) & (PosCa=9)))
                 x:=15
                 y:=9
-                {Informar("probabilidad de choque",4)}
+                Informar("probabilidad de choque",4)
                 intersecion(tipo,cant,x,y,ok,lado)
         si (ok=V)
           juntar(tipo,cant)                
