@@ -1,0 +1,93 @@
+programa ejercicio2
+procesos 
+  proceso jnt(E cant: numero; ES ok:boolean) 
+  comenzar  
+    repetir cant
+      si(HayPapelEnLaEsquina)
+        tomarPapel
+        ok:=V
+      sino
+        ok:=F
+  fin
+  proceso juntar5(ES cant:numero; ES ok:boolean)
+  comenzar
+    mientras(HayPapelEnLaEsquina)& ~(cant=5)
+      tomarPapel
+      cant:=cant +1
+    si (cant=5)
+      ok:=V
+    sino
+      ok:=F
+  fin
+areas
+  fuente: AreaC (50,50,50,50)
+  prodc1: AreaP(5,1,5,100)
+  prodc2: AreaP(10,1,10,100)
+  reposo:AreaPC(11,1,12,1)
+robots
+  robot productor
+  variables
+    ok:boolean
+    av,ca,cant:numero
+  comenzar
+    cant:=0
+    ok:=F
+    mientras (PosCa<100)
+      juntar5(cant,ok)
+      si (ok=V)
+        BloquearEsquina(50,50)
+        Pos(50,50)
+        repetir 5
+          depositarPapel
+          cant:=0
+        Pos(av,ca)
+        LiberarEsquina(50,50)
+      sino 
+        mover
+      av:=PosAv
+      ca:= PosCa
+  fin
+  
+  robot consumidor
+  variables
+    intento,cant,av,ca:numero
+    ok:boolean
+  comenzar
+    av:=PosAv
+    ca:=PosCa
+    ok:=F
+    cant:=0
+    intento:=0
+    mientras ~(intento=8)
+      Random(cant,2,5)
+      BloquearEsquina(50,50)
+      Pos(50,50)   
+      jnt(cant,ok)
+      Pos(av,ca)
+      LiberarEsquina(50,50)
+      si (ok=F)
+        intento:=intento + 1
+      sino
+        intento:=0
+  fin
+variables
+  p1:productor
+  p2:productor
+  c1:consumidor
+  c2:consumidor
+comenzar
+  AsignarArea(p1, prodc1)
+  AsignarArea(p1, fuente)
+  AsignarArea(p2, prodc2)
+  AsignarArea(p2, fuente)
+  AsignarArea(c1, fuente)
+  AsignarArea(c2, fuente)
+  AsignarArea(c1, reposo)
+  AsignarArea(c2, reposo)
+  Iniciar(p1, 5,1)
+  Iniciar(p2, 10,1)
+  Iniciar(c1,12,1)
+  Iniciar(c2,11,1)
+fin
+
+
