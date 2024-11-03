@@ -1,0 +1,136 @@
+programa ejercicio1
+procesos
+  proceso avanzarDejandoFlores
+  comenzar
+    mientras ((HayFlorEnLaBolsa) & (PosCa<100))
+      depositarFlor 
+      mover
+    si(HayFlorEnLaBolsa) & (PosCa = 100)
+      depositarFlor
+  fin
+  proceso iniciar
+  comenzar
+    EnviarMensaje(1,c1)
+    EnviarMensaje(2,c2)
+    EnviarMensaje(3,c3)
+  fin
+  proceso cargar (ES f:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      f:=f +1
+  fin
+  
+areas
+  areaServidor: AreaP(100,100,100,100)
+  areaCliente: AreaPC(1,1,3,100)
+robots
+  robot cliente 
+  variables
+    av,ca:numero
+    quiero:numero
+    ok:boolean
+    id:numero
+  comenzar
+    ok:=F
+    RecibirMensaje(id,sv)
+    mientras ~(PosCa=100)
+      av:=PosAv
+      ca:=PosCa
+      Random(quiero,1,4)
+      EnviarMensaje(id,sv)
+      EnviarMensaje(quiero,sv)
+      EnviarMensaje(av,sv)
+      EnviarMensaje(ca,sv)
+      RecibirMensaje(ok,sv)
+      si(ok)
+        BloquearEsquina(av,ca+1)
+        Pos(av,ca+1)
+        mientras(HayFlorEnLaEsquina)
+          tomarFlor
+        Pos(av,ca)
+        LiberarEsquina(av,ca+1)
+        avanzarDejandoFlores
+  fin
+  
+  
+  robot servidor
+  variables
+    floresT:numero
+    id:numero
+    demanda,av,ca:numero
+    ok1,ok2,ok3:boolean
+  comenzar
+    ok1:=V
+    ok2:=V
+    ok3:=V
+    cargar(floresT)  
+    iniciar
+    mientras (ok1) | (ok2 )| (ok3)
+      RecibirMensaje(id,*)
+      si (id= 1)
+        RecibirMensaje(demanda,c1) 
+        si (demanda<floresT)
+          RecibirMensaje(av,c1)  
+          RecibirMensaje(ca,c1)
+          BloquearEsquina(av,ca+1)
+          Pos(av,ca+1)
+          repetir demanda
+            si (HayFlorEnLaBolsa)
+              depositarFlor
+              floresT:=floresT -1
+          Pos(100,100)
+          LiberarEsquina(av,ca+1)
+          EnviarMensaje(V,c1)
+        sino
+          ok1:=F
+      sino 
+        si (id= 2)
+          RecibirMensaje(demanda,c2) 
+          si (demanda<floresT)
+            RecibirMensaje(av,c2)  
+            RecibirMensaje(ca,c2)
+            BloquearEsquina(av,ca+1)
+            Pos(av,ca+1)
+            repetir demanda
+              si (HayFlorEnLaBolsa)
+                depositarFlor
+                floresT:=floresT -1
+            Pos(100,100)
+            LiberarEsquina(av,ca+1)
+            EnviarMensaje(V,c2)
+          sino
+            ok2:=F
+        sino
+          RecibirMensaje(demanda,c3) 
+          si (demanda<floresT)
+            RecibirMensaje(av,c3)  
+            RecibirMensaje(ca,c3)
+            BloquearEsquina(av,ca+1)
+            Pos(av,ca+1)
+            repetir demanda
+              si (HayFlorEnLaBolsa)
+                depositarFlor
+                floresT:=floresT -1
+            Pos(100,100)   
+            LiberarEsquina(av,ca+1)         
+            EnviarMensaje(V,c3)
+          sino
+            ok3:=F
+  fin
+variables
+  c1:cliente
+  c2:cliente
+  c3:cliente
+  sv:servidor
+comenzar
+  AsignarArea(sv, areaServidor)
+  AsignarArea(sv,areaCliente)
+  AsignarArea(c1,areaCliente)
+  AsignarArea(c2,areaCliente) 
+  AsignarArea(c3,areaCliente) 
+  Iniciar(sv, 100,100)
+  Iniciar(c1, 1,1)
+  Iniciar(c2, 2,1)
+  Iniciar(c3, 3,1)
+fin
