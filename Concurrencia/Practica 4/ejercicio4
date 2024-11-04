@@ -1,0 +1,114 @@
+programa ejercicio4
+procesos
+  proceso asignartarea(E eleccion:numero;E tarea:numero;E av:numero; E ca:numero)
+  comenzar 
+    si (eleccion=1) 
+      EnviarMensaje(tarea,e1)
+      EnviarMensaje(av,e1)
+      EnviarMensaje(ca,e1)
+    sino 
+      EnviarMensaje(tarea,e2)
+      EnviarMensaje(av,e2)
+      EnviarMensaje(ca,e2)
+  fin
+  proceso hacer(E tarea:numero; E av:numero; E ca:numero)
+  comenzar
+    si (tarea=1)
+      iniciotarea1(av,ca)
+    sino 
+      si (tarea=2)
+        iniciotarea2(av,ca)
+      sino 
+        si (tarea=3)
+          iniciotarea3(av,ca)
+  fin
+  proceso iniciotarea1(E av:numero; E ca:numero)
+  variables
+    inix,iniy:numero
+  comenzar
+    inix:=PosAv
+    iniy:=PosCa
+    BloquearEsquina(av,ca)
+    Pos(av,ca)
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+    Pos(inix,iniy)
+    LiberarEsquina(av,ca)
+  fin 
+  proceso iniciotarea2(E av:numero; E ca:numero)
+  variables
+    inix,iniy:numero
+  comenzar
+    inix:=PosAv
+    iniy:=PosCa
+    BloquearEsquina(av,ca)
+    Pos(av,ca)
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+    Pos(inix,iniy)
+    LiberarEsquina(av,ca)
+  fin
+  proceso iniciotarea3(E av:numero; E ca:numero)
+  variables
+    inix,iniy:numero
+  comenzar
+    inix:=PosAv
+    iniy:=PosCa
+    BloquearEsquina(av,ca)
+    Pos(av,ca)
+    mientras(HayPapelEnLaBolsa)
+      depositarPapel
+    mientras (HayFlorEnLaBolsa)
+      depositarFlor
+    Pos(inix,iniy)
+    LiberarEsquina(av,ca)
+  fin
+areas
+  areajefe: AreaC (1,1,1,1)
+  areaLaburo: AreaPC ( 2,2,100,100)
+  areaE1: AreaP(2,1,2,1)
+  areaE2: AreaP(3,1,3,1)
+robots
+  robot exclavo
+  variables
+    tarea:numero
+    av,ca:numero
+  comenzar
+    tarea:=0
+    mientras (tarea<>4)
+      RecibirMensaje(tarea,j) 
+      RecibirMensaje(av,j)
+      RecibirMensaje(ca,j) 
+      hacer(tarea,av,ca) 
+      EnviarMensaje(V,j)
+  fin
+  
+  robot jefe
+  variables
+    tarea,av,ca,eleccion:numero
+    ok:boolean
+  comenzar
+    repetir 10
+      Random(tarea,1,3)      
+      Random(av,2,100)
+      Random(ca,2,100)
+      Random(eleccion,1,2)
+      asignartarea(eleccion,tarea,av,ca)
+      RecibirMensaje(ok,*)
+    asignartarea(1,4,av,ca)
+    asignartarea(2,4,av,ca)
+  fin
+variables
+  j:jefe
+  e1: exclavo
+  e2: exclavo
+comenzar
+  AsignarArea(j, areajefe)
+  AsignarArea(e1, areaE1)
+  AsignarArea(e2, areaE2)
+  AsignarArea(e1, areaLaburo)
+  AsignarArea(e2, areaLaburo)
+  Iniciar(j, 1,1)
+  Iniciar(e1 , 2,1)
+  Iniciar(e2 , 3,1)
+fin
