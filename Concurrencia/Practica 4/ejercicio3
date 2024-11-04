@@ -1,0 +1,70 @@
+programa ejercicio3
+procesos
+  proceso jntpapel
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+areas
+  area1 : AreaP(1, 1, 1, 100)
+  area2 : AreaP(2, 1, 2, 100)
+  area3 : AreaP(3, 1, 3, 100)
+  aux : AreaP(5, 5, 5, 5)
+robots
+  robot papelero
+  variables
+    id,cant : numero
+    ok,aux : boolean
+  comenzar
+    RecibirMensaje(id,coo)
+    cant:=0
+    ok:=V
+    mientras(PosCa<100)
+      mientras(ok)
+        mientras (cant<>5)&(PosCa<100)
+          jntpapel
+          mover
+          cant:=cant +1
+        si (cant=5)
+          ok:=V
+        si (PosCa=100)
+          ok:=F
+        cant:=0
+        si (id=1)
+          EnviarMensaje(ok,r3)
+          EnviarMensaje(ok,r2)
+        sino 
+          si (id=2)
+            EnviarMensaje(ok,r1)
+            EnviarMensaje(ok,r3)
+          sino 
+            EnviarMensaje(ok,r1)
+            EnviarMensaje(ok,r2)
+        repetir 2
+          RecibirMensaje(aux,*)
+          si (ok)&(aux)
+            ok:=V
+          sino 
+            ok:=F  
+  fin  
+  robot cordinador
+  comenzar
+    EnviarMensaje(1, r1)
+    EnviarMensaje(2, r2)
+    EnviarMensaje(3, r3)
+  fin
+variables
+  r1 : papelero
+  r2 : papelero
+  r3 : papelero
+  coo : cordinador
+comenzar
+  AsignarArea(r1, area1)
+  AsignarArea(r2, area2)
+  AsignarArea(r3, area3)
+  AsignarArea(coo, aux)
+  Iniciar(r1, 1, 1)
+  Iniciar(r2, 2, 1)
+  Iniciar(r3, 3, 1)
+  Iniciar(coo, 5, 5)
+fin
