@@ -1,0 +1,133 @@
+programa parcial1
+procesos
+  proceso iniciar
+  comenzar
+    EnviarMensaje(1,a1)
+    EnviarMensaje(1,a2)
+    EnviarMensaje(2,b1)
+    EnviarMensaje(2,b2)
+  fin
+  proceso izquierda
+  comenzar  
+    repetir 3
+      derecha
+  fin
+  proceso atras
+  comenzar
+    repetir 2
+      izquierda
+  fin
+  proceso jntflor(ES cant:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cant:=cant+1
+  fin
+  proceso dejarflor(ES cant:numero; E av:numero; E ca:numero)
+  comenzar
+    mientras (cant<>0)   
+      BloquearEsquina(20,20)
+      Pos(20,20)
+      si(HayFlorEnLaBolsa)
+        depositarFlor
+        cant:=cant -1
+      Pos(av,ca)
+      LiberarEsquina(20,20)
+  fin
+  proceso lado(ES cant:numero; E x:numero)
+  comenzar
+    repetir x
+      jntflor(cant)
+      mover
+  fin
+areas
+  areaFisca: AreaP(30,1,30,1)
+  depositar: AreaPC(20,20,20,20)
+  equipoA: AreaPC(1,1,11,11)
+  equipoB: AreaPC(13,1,23,11)
+robots
+  robot fiscalizador
+  variables
+    id:numero
+    cant,cantA,cantB:numero
+  comenzar
+    cantA:=0
+    cantB:=0
+    iniciar
+    repetir 2
+      RecibirMensaje(id,*)
+      si (id=1)
+        RecibirMensaje(cant,*)
+        cantA:=cantA + cant
+      sino
+        si (id=2)
+          RecibirMensaje(cant,*)
+          cantB:=cantB + cant
+    si(cantA>cantB)
+      Informar("gano el equipo A",cantA)
+    sino
+      Informar("gano el equipo B",cantB)     
+  fin
+  robot ladox1
+  variables
+    cant,id,av,ca:numero
+    cantT:numero
+  comenzar
+    cant:=0
+    cantT:=0
+    RecibirMensaje(id,fisca)
+    si (id=1)
+      RecibirMensaje(cantT,a1)
+    sino  
+      RecibirMensaje(cantT,b1)
+    atras
+    lado(cant,9)
+    derecha
+    lado(cant,10)
+    jntflor(cant)
+    av:=PosAv
+    ca:=PosCa
+    cantT:=cant + cantT
+    EnviarMensaje(id,fisca)
+    EnviarMensaje(cantT,fisca)
+    dejarflor(cant,av,ca)
+  fin
+  robot ladox
+  variables
+    cant,id,av,ca:numero
+  comenzar
+    cant:=0
+    RecibirMensaje(id,fisca)
+    repetir 2
+      lado(cant,10)
+      derecha
+    si (id=1)
+      EnviarMensaje(cant,a2)
+    sino  
+      EnviarMensaje(cant,b2)
+    av:=PosAv
+    ca:=PosCa
+    dejarflor(cant,av,ca)
+  fin
+variables
+  a1: ladox
+  a2: ladox1
+  b1: ladox
+  b2: ladox1
+  fisca: fiscalizador
+comenzar
+  AsignarArea(fisca,areaFisca)
+  AsignarArea(a1, equipoA)
+  AsignarArea(a2, equipoA)
+  AsignarArea(b1, equipoB)
+  AsignarArea(b2, equipoB)
+  AsignarArea(a1, depositar)
+  AsignarArea(a2, depositar)
+  AsignarArea(b1, depositar)
+  AsignarArea(b2, depositar)
+  Iniciar(fisca, 30,1)
+  Iniciar(a1, 1,1)
+  Iniciar(a2, 11,10)  
+  Iniciar(b1, 13,1)
+  Iniciar(b2, 23,10)
+fin
