@@ -1,0 +1,92 @@
+programa Parcial2
+procesos
+  proceso jntflor(ES cant:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cant:=cant+1
+  fin
+  proceso dejarflor(ES cant:numero; E av:numero; E ca:numero)
+  comenzar  
+    mientras(cant<>0)
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      si (HayFlorEnLaBolsa)
+        depositarFlor
+        cant:=cant-1
+      Pos(av,ca)
+      LiberarEsquina(50,50)
+  fin
+  proceso cuadrado(E lado:numero; ES cant:numero)
+  comenzar
+    repetir 4
+      repetir lado
+        jntflor(cant)
+        mover
+      derecha
+  fin
+areas
+  jefe:AreaP(51,1,51,1)
+  deposito:AreaPC(50,50,50,50)
+  arear1: AreaP(1,1,6,31)
+  arear2: AreaP (8,1,13,31)
+  arear3: AreaP(15,1,20,31)
+  
+robots
+  robot figura
+  variables
+    id,av,ca:numero
+    lado,cant:numero
+    aviso:boolean
+  comenzar
+    RecibirMensaje(id,coo)
+    cant:=0
+    av:=PosAv
+    ca:=PosCa
+    repetir 5
+      Random(lado,1,5)
+      cuadrado(lado,cant)
+      av:=PosAv
+      ca:=PosCa
+      si (id=1)
+        EnviarMensaje(V,r2)
+        EnviarMensaje(V,r3)
+      sino
+        si (id=2)
+          EnviarMensaje(V,r1)
+          EnviarMensaje(V,r3)
+        sino 
+          EnviarMensaje(V,r1)
+          EnviarMensaje(V,r2)  
+      repetir 2
+        RecibirMensaje(aviso,*)
+      Pos(av,ca+lado+1)
+    av:=PosAv
+    ca:=PosCa
+    dejarflor(cant,av,ca)
+  fin
+  robot  cordinardor
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    
+  fin
+variables
+  r1: figura
+  r2: figura
+  r3: figura
+  coo : cordinardor
+comenzar
+  AsignarArea(coo, jefe)
+  AsignarArea(r1, arear1)
+  AsignarArea(r1, deposito)
+  AsignarArea(r2, arear2)
+  AsignarArea(r2, deposito)
+  AsignarArea(r3, arear3)
+  AsignarArea(r3, deposito)
+  Iniciar(coo, 51,1)
+  Iniciar(r1, 1,1)
+  Iniciar(r2, 8,1)
+  Iniciar(r3, 15,1)
+fin
