@@ -1,0 +1,104 @@
+programa Parcial3
+procesos
+  proceso iniciarRobots
+  comenzar
+    EnviarMensaje(1,f1)
+    EnviarMensaje(2,f2)
+    EnviarMensaje(3,f3)
+  fin
+  proceso jntflor(ES cant:numero)
+  comenzar
+    mientras ( HayFlorEnLaEsquina)
+      tomarFlor
+      cant:=cant+1
+  fin
+areas
+  recolecion: AreaPC (40,40,60,60)
+  jefe:AreaP(4,1,4,1)
+  areaR1:AreaP(1,1,1,1)
+  areaR2:AreaP(2,1,2,1)
+  areaR3:AreaP(3,1,3,1)
+  deposito:AreaPC(10,10,10,10)
+  
+robots
+  robot floreros
+  variables
+    id:numero
+    cant,turno:numero
+    av,ca,x,y:numero
+  comenzar
+    x:=PosAv
+    y:=PosCa
+    RecibirMensaje(id,fisca)
+    RecibirMensaje(turno,fisca)
+    mientras(turno=id)
+      RecibirMensaje(av,fisca)
+      RecibirMensaje(ca,fisca)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      jntflor(cant)
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      LiberarEsquina(av,ca)
+      mientras(HayFlorEnLaBolsa)
+        depositarFlor
+      Pos(x,y)
+      LiberarEsquina(10,10)
+      EnviarMensaje(cant,fisca)
+      cant:=0
+      RecibirMensaje(turno,fisca)
+  fin
+  robot fiscalizador
+  variables
+    id:numero
+    cant,cantT:numero
+    turno:numero
+    av,ca:numero
+  comenzar
+    cantT:=0
+    iniciarRobots
+    repetir 8 
+      Random(turno,1,3)
+      Random(av,40,60)
+      Random(ca,40,60)
+      si(turno=1)
+        EnviarMensaje(turno,f1)
+        EnviarMensaje(av,f1)
+        EnviarMensaje(ca,f1)
+      sino
+        si (turno=2)
+          EnviarMensaje(turno,f2)
+          EnviarMensaje(av,f2)
+          EnviarMensaje(ca,f2)
+        sino
+          EnviarMensaje(turno,f3)
+          EnviarMensaje(av,f3)
+          EnviarMensaje(ca,f3)
+      RecibirMensaje(cant,*)
+      cantT:=cant +cantT
+    EnviarMensaje(4,f1)
+    EnviarMensaje(4,f2)
+    EnviarMensaje(4,f3)
+    Informar(cantT)  
+  fin
+variables
+  fisca: fiscalizador
+  f1: floreros
+  f2: floreros
+  f3: floreros
+comenzar
+  AsignarArea(fisca, jefe)
+  AsignarArea(f1, areaR1)
+  AsignarArea(f2, areaR2)  
+  AsignarArea(f3, areaR3)
+  AsignarArea(f1, deposito)
+  AsignarArea(f2, deposito)
+  AsignarArea(f3, deposito)
+  AsignarArea(f1, recolecion)
+  AsignarArea(f2, recolecion)
+  AsignarArea(f3, recolecion)
+  Iniciar(f1, 1,1)
+  Iniciar(f2, 2,1)
+  Iniciar(f3, 3,1)
+  Iniciar(fisca, 4,1)
+fin
