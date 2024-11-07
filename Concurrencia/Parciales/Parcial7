@@ -1,0 +1,139 @@
+programa Parcial7
+procesos
+  proceso jntflor(ES cant:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cant:=cant +1
+  fin 
+  proceso jntpapel(ES cant:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cant:=cant +1
+  fin 
+  proceso jnt(ES cant:numero; E tipo:numero)
+  comenzar    
+    si(tipo=1)|(tipo=3)
+      jntflor(cant)
+    sino 
+      jntpapel(cant)
+  fin
+  proceso maximo(E id:numero; E cant:numero; ES cantV:numero; ES cantA:numero)
+  comenzar
+    si(id>2)
+      cantV:=cantV+ cant
+    sino 
+      cantA:=cantA + cant
+  fin
+areas
+  azul:AreaPC(2,4,12,24)
+  verde: AreaPC(16,4,26,24)
+  areaJefe:AreaP(1,1,1,1)
+robots
+  robot derechaa
+  variables
+    id:numero
+    cant:numero
+    av,ca:numero
+  comenzar
+    cant:=0
+    av:=PosAv
+    ca:=PosCa
+    RecibirMensaje(id,j)
+    derecha
+    repetir 4
+      jnt(cant,id)
+      mover
+    jnt(cant,id)
+    si (id =1)
+      BloquearEsquina(7,12)
+      mover
+      jnt(cant,id)
+      mover
+      LiberarEsquina(7,12)
+    sino 
+      BloquearEsquina(21,12)
+      mover
+      jnt(cant,id)
+      mover
+      LiberarEsquina(21,12)
+    repetir 4
+      jnt(cant,id)
+      mover
+    EnviarMensaje(id,j)
+    EnviarMensaje(cant,j)
+  fin
+  robot arriba
+  variables
+    id:numero
+    cant:numero
+    av,ca:numero
+  comenzar
+    cant:=0
+    av:=PosAv
+    ca:=PosCa
+    RecibirMensaje(id,j)
+    repetir 18
+      si(PosCa=11)
+        BloquearEsquina(av,12)
+        mover
+        jnt(cant,id)
+        mover
+        LiberarEsquina(av,12)
+        jnt(cant,id)
+      jnt(cant,id)
+      mover
+      av:=PosAv
+      ca:=PosCa
+    EnviarMensaje(id,j)
+    EnviarMensaje(cant,j)
+  fin
+  robot fisca
+  variables
+    id:numero
+    cant,cantV,cantA:numero
+  comenzar
+    cantV:=0
+    cantA:=0
+    EnviarMensaje(1,a1)
+    EnviarMensaje(2,a2)
+    EnviarMensaje(3,v1)
+    EnviarMensaje(4,v2) 
+    repetir 4
+      RecibirMensaje(id,*)
+      si(id=1)
+        RecibirMensaje(cant,a1)
+      sino 
+        si(id=2)
+          RecibirMensaje(cant,a2)
+        sino 
+          si(id=3)
+            RecibirMensaje(cant,v1)
+          sino
+            si(id=4)
+              RecibirMensaje(cant,v2)
+      maximo(id,cant,cantV,cantA)
+    si(cantV<cantA)
+      Informar("gano el azul",cantA)
+    sino 
+      Informar("gano el verde",cantV)   
+  fin
+variables
+  a1:derechaa
+  a2:arriba
+  v1:derechaa
+  v2:arriba
+  j:fisca
+comenzar
+  AsignarArea(j, areaJefe)
+  AsignarArea(a1, azul)
+  AsignarArea(a2, azul)
+  AsignarArea(v1, verde)
+  AsignarArea(v2, verde)
+  Iniciar(j, 1,1)
+  Iniciar(a1, 2,12)
+  Iniciar(a2, 7,4)
+  Iniciar(v1, 16,12)
+  Iniciar(v2, 21,4)  
+fin
