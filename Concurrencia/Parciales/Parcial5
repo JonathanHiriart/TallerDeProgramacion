@@ -1,0 +1,118 @@
+programa parcial5
+procesos
+  proceso jntflor(ES cant:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      cant:=cant+1
+  fin
+  proceso cuadrado(E lado:numero; ES cant:numero)
+  comenzar
+    repetir 4
+      repetir lado
+        jntflor(cant)
+        mover
+      derecha
+  fin
+  proceso dejarFlordeauna(ES cant:numero;E av:numero;E ca:numero)
+  comenzar
+    mientras (cant<>0)
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      si (HayFlorEnLaBolsa)  
+        depositarFlor
+        cant:=cant-1
+      Pos(av,ca)
+      LiberarEsquina(50,50)
+  fin
+  proceso maximos(E id:numero;E cant:numero;ES idmax:numero; ES max:numero)
+  comenzar
+    si (cant>max)
+      idmax:=id
+  fin 
+areas
+  areaC1:AreaP(1,1,7,21)
+  areaC2:AreaP(10,1,16,21)
+  areaC3:AreaP(20,1,26,21)
+  deposito: AreaC(50,50,50,50)
+  areaJefe: AreaP(100,100,100,100)
+robots
+  robot cuadrados
+  variables
+    id:numero
+    lado,cant,cantT:numero
+    av,ca:numero
+  comenzar
+    RecibirMensaje(id,jefe)
+    repetir 3
+      cant:=0
+      cantT:=0
+      RecibirMensaje(lado,jefe)
+      cuadrado(lado,cant)
+      av:=PosAv
+      ca:=PosCa
+      cantT:=cant
+      dejarFlordeauna(cant,av,ca)
+      EnviarMensaje(id,jefe)
+      EnviarMensaje(cantT,jefe)
+      Pos(av,ca+lado+1) 
+  fin
+  robot fisca
+  variables
+    lado,id:numero
+    max,cant,idmax:numero
+    av,ca:numero
+  comenzar
+    idmax:=99999
+    max:=0
+    av:=PosAv
+    ca:=PosCa
+    EnviarMensaje(1,c1)
+    EnviarMensaje(2,c2)
+    EnviarMensaje(3,c3)
+    repetir 3    
+      Random(lado,1,6)
+      EnviarMensaje(lado,c1)
+      Random(lado,1,6)
+      EnviarMensaje(lado,c2)
+      Random(lado,1,6)
+      EnviarMensaje(lado,c3)
+      repetir 3
+        RecibirMensaje(id,*)
+        si(id=1)
+          RecibirMensaje(cant,c1)
+        sino 
+          si (id=2)
+            RecibirMensaje(cant,c2)
+          sino
+            si (id=3) 
+              RecibirMensaje(cant,c3)
+        maximos(id,cant,idmax,max)
+        BloquearEsquina(50,50)
+        Pos(50,50)
+        repetir cant
+          tomarFlor
+        Pos(av,ca)
+        LiberarEsquina(50,50)
+    Informar(idmax)
+      
+  fin
+variables
+  c1:cuadrados
+  c2:cuadrados
+  c3:cuadrados
+  jefe:fisca
+comenzar
+  AsignarArea(c1,areaC1)
+  AsignarArea(c2,areaC2)
+  AsignarArea(c3,areaC3)
+  AsignarArea(c1,deposito)
+  AsignarArea(c2,deposito)
+  AsignarArea(c3,deposito)
+  AsignarArea(jefe,areaJefe)
+  AsignarArea(jefe,deposito)
+  Iniciar(c1, 1,1)
+  Iniciar(c2, 10,1)
+  Iniciar(c3, 20,1)
+  Iniciar(jefe, 100,100)  
+fin
