@@ -1,0 +1,148 @@
+programa Parcial4
+procesos
+  proceso iniciar
+  comenzar
+    EnviarMensaje(1,c1)
+    EnviarMensaje(2,c2)
+    EnviarMensaje(3,c3)
+    EnviarMensaje(4,c4)
+  fin
+  proceso jntunaflor(ES cant:numero)
+  comenzar
+    si(HayFlorEnLaEsquina)
+      tomarFlor
+      cant:=cant +1
+  fin
+  proceso jntunaPapel(ES cant:numero)
+  comenzar
+    si(HayPapelEnLaEsquina)
+      tomarPapel
+      cant:=cant +1
+  fin
+  proceso depostiarflor(ES cant:numero; E av:numero;E ca:numero)
+  comenzar
+    mientras (cant<>0)
+      BloquearEsquina(1,6)
+      Pos(1,6) 
+      si(HayFlorEnLaBolsa)
+        depositarFlor
+        cant:=cant-1
+      Pos(av,ca)
+      LiberarEsquina(1,6)
+  fin
+  proceso depostiarpapel(ES cant:numero; E av:numero;E ca:numero)
+  comenzar
+    mientras (cant<>0)
+      BloquearEsquina(1,6)
+      Pos(1,6) 
+      si(HayPapelEnLaBolsa)
+        depositarPapel
+        cant:=cant-1
+      Pos(av,ca)
+      LiberarEsquina(1,6)
+  fin
+  proceso vaciarbolsa
+  comenzar
+    mientras (HayFlorEnLaBolsa)
+      depositarFlor
+    mientras (HayPapelEnLaBolsa)
+      depositarPapel
+  fin
+areas
+  deposito:AreaPC(1,6,1,6)
+  areaC1: AreaP(1,1,20,1)    
+  areaC2: AreaP(1,2,20,2)
+  areaC3: AreaP(1,3,20,3)    
+  areaC4: AreaP(1,4,20,4)
+  areaJefe: AreaP(1,5,1,5)
+robots
+  robot corredor
+  variables
+    id,cant:numero
+    av,ca:numero
+    gana1,gana2:numero
+    ok:boolean
+  comenzar
+    cant:=0
+    vaciarbolsa
+    derecha
+    av:=PosAv
+    ca:=PosCa
+    Pos(av+1,ca)
+    RecibirMensaje(id,jefe) 
+    EnviarMensaje(V,jefe)
+    RecibirMensaje(ok,jefe)
+    repetir 18
+      jntunaflor(cant)
+      mover
+    jntunaflor(cant)
+    av:=PosAv
+    ca:=PosCa
+    depostiarflor(cant,av,ca)
+    cant:=0
+    EnviarMensaje(id,jefe)
+    RecibirMensaje(gana1,jefe)
+    RecibirMensaje(gana2,jefe)
+    si (gana1=id)|(gana2=id)
+      repetir 2
+        derecha
+      repetir 18
+        jntunaPapel(cant)
+        mover
+      jntunaPapel(cant)
+      av:=PosAv
+      ca:=PosCa
+      depostiarpapel(cant,av,ca)
+      EnviarMensaje(id,jefe)
+  fin
+  robot fisca
+  variables
+    e1,e2:numero
+    id:numero
+    ganador:numero
+    ok:boolean
+  comenzar
+    iniciar
+    repetir 4
+      RecibirMensaje(ok,*)
+    iniciar 
+    RecibirMensaje(id,*)
+    e1:=id
+    RecibirMensaje(id,*)
+    e2:=id
+    repetir 2
+      RecibirMensaje(id,*)
+    EnviarMensaje(e1,c1)
+    EnviarMensaje(e1,c2)
+    EnviarMensaje(e1,c3)
+    EnviarMensaje(e1,c4)
+    EnviarMensaje(e2,c1)
+    EnviarMensaje(e2,c2)
+    EnviarMensaje(e2,c3)
+    EnviarMensaje(e2,c4)
+    RecibirMensaje(ganador,*)
+    RecibirMensaje(id,*)
+    Informar(ganador)
+  fin
+variables
+  c1: corredor
+  c2: corredor
+  c3: corredor
+  c4: corredor  
+  jefe:fisca
+comenzar
+  AsignarArea(jefe,areaJefe )
+  AsignarArea(c1, deposito)
+  AsignarArea(c2, deposito)  
+  AsignarArea(c3, deposito)
+  AsignarArea(c4, deposito)
+  AsignarArea(c1, areaC1)
+  AsignarArea(c2, areaC2)
+  AsignarArea(c3, areaC3)
+  AsignarArea(c4, areaC4)
+  Iniciar(jefe, 1,5)
+  Iniciar(c1, 1,1)
+  Iniciar(c2, 1,2)
+  Iniciar(c3, 1,3)
+  Iniciar(c4, 1,4)
+fin
