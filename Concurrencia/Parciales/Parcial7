@@ -31,7 +31,7 @@ areas
   verde: AreaPC(16,4,26,24)
   areaJefe:AreaP(1,1,1,1)
 robots
-  robot derechaa
+  robot florero
   variables
     id:numero
     cant:numero
@@ -64,7 +64,7 @@ robots
     EnviarMensaje(id,j)
     EnviarMensaje(cant,j)
   fin
-  robot arriba
+  robot papelero
   variables
     id:numero
     cant:numero
@@ -120,10 +120,10 @@ robots
       Informar("gano el verde",cantV)   
   fin
 variables
-  a1:derechaa
-  a2:arriba
-  v1:derechaa
-  v2:arriba
+  a1:florero
+  a2:papelero
+  v1:florero
+  v2:papelero
   j:fisca
 comenzar
   AsignarArea(j, areaJefe)
