@@ -1,0 +1,120 @@
+programa Parcial8
+procesos
+  proceso jntflor(ES cant:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cant:=cant+ 1
+  fin
+  proceso jntpapel(ES cant:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cant:=cant+ 1
+  fin
+  proceso jnt(ES cant:numero;E vuelta:boolean)
+  comenzar
+    si (vuelta)
+      jntpapel(cant)
+    sino
+      jntflor(cant)
+  fin
+  proceso atras
+  comenzar
+    repetir 2
+      derecha
+  fin
+  proceso maximo(E id:numero; E cant:numero;ES max:numero;ES idmax:numero)
+  comenzar
+    si(cant>max)
+      max:=cant
+      idmax:=id
+  fin
+areas
+  fiscalizador:AreaP(1,6,1,6)
+  medio: AreaPC (6,6,6,6)
+  areaC1ida:AreaP(1,5,5,5)
+  areaC1vuelta:AreaP(7,7,11,7)
+  areaC2ida:AreaP(1,7,5,7)
+  areaC2vuelta:AreaP (7,5,11,5)
+robots
+  robot corredor1
+  variables
+    id:numero
+    cant:numero
+    vuelta:boolean
+  comenzar  
+    derecha
+    vuelta:=F
+    RecibirMensaje(id,j)
+    repetir 2
+      cant:=0
+      repetir 4
+        jnt(cant,vuelta)
+        mover
+      jnt(cant,vuelta)
+      BloquearEsquina(6,6)
+      Pos(6,6)
+      jnt(cant,vuelta)
+      si (id=1)
+        si(vuelta=F)
+          Pos(7,7)
+        sino 
+          Pos(5,5)
+      sino 
+        si(vuelta=F)
+          Pos(7,5)
+          jnt(cant,vuelta)
+        sino 
+          Pos(5,7)
+      LiberarEsquina(6,6)
+      jnt(cant,vuelta)
+      repetir 4
+        jnt(cant,vuelta)
+        mover
+      EnviarMensaje(id,j)
+      EnviarMensaje(cant,j)
+      atras
+      vuelta:=V
+  fin
+  robot fisca
+  variables
+    id,idmax:numero
+    cant,max:numero
+    vuelta:boolean
+  comenzar
+    vuelta:=F
+    idmax:=999{empate}
+    max:=0
+    EnviarMensaje(1,c1)
+    EnviarMensaje(2,c2)
+    repetir 2
+      repetir 2
+        RecibirMensaje(id,*)
+        si(id=1)
+          RecibirMensaje(cant,c1)
+        sino
+          RecibirMensaje(cant,c2)
+        maximo(id,cant,max,idmax)
+        vuelta:=V
+      si(vuelta)
+        Informar("el ganador de la carrera de ida es",idmax)
+      sino
+        Informar("el ganador de la carrera de vuelta es ",idmax)
+  fin 
+variables
+  c1: corredor1
+  c2: corredor1
+  j:fisca
+comenzar
+  AsignarArea(j, fiscalizador)
+  AsignarArea(c1, medio)
+  AsignarArea(c2, medio)
+  AsignarArea(c1, areaC1ida)
+  AsignarArea(c1, areaC1vuelta)
+  AsignarArea(c2, areaC2ida)
+  AsignarArea(c2, areaC2vuelta)
+  Iniciar(c1, 1,5)
+  Iniciar(c2, 1,7)
+  Iniciar(j, 1,6)
+fin
